@@ -1,0 +1,64 @@
+<!-- 
+layout_above 将该控件的底部至于给定ID的控件之上
+layout_below 将该控件的底部至于给定ID的控件之下
+layout_toLeftOf 将该控件的右边缘和给定ID的控件的左边缘对齐
+layout_toRightOf 将该控件的左边缘和给定ID的控件的右边缘对齐
+
+layout_alignBaseline 该控件的baseline和给定ID的控件的baseline对齐
+layout_alignBottom 将该控件的底部边缘与给定ID控件的底部边缘对齐
+layout_alignLeft 该控件的左边缘和给定ID的控件的左边缘对齐
+layout_alignRight 该控件的右边缘和给定ID的控件的右边缘对齐
+layout_alignTop 该控件的顶部边缘和给定ID的控件的顶部边缘对齐
+
+layout_alignParentBottom 如果该值为true，则将该控件的底部和父控件的底部对齐
+layout_alignParentLeft 如果该值为true，则将该控件的左边和父控件的左边对齐
+layout_alignParentTop 如果该值为true，则将该控件的顶部和父控件的顶部对齐
+layout_alignParentRight 如果该值为true，则将该控件的右边和父控件的右边对齐
+
+layout_centerHorizontal 如果值为true，该控件将被至于水平方向中央
+layout_centerInParent 如果值为true，该控件将被至于父控件水平和垂直方向中央
+layout_centerInVertical 如果值为true，该控件将被至于垂直方向中央
+ -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.relativelayout.Main" >
+
+    <TextView
+    	android:id="@+id/label"
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:text="Type here:"
+    />
+
+<EditText
+    	android:id="@+id/entry"
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_below="@id/label"
+    />
+
+
+<Button 
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/ok"
+    android:layout_below="@id/entry"
+	android:layout_alignParentRight="true" 
+	android:layout_marginLeft="10px"
+	android:text="OK"
+/>
+<Button 
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+    	android:layout_toLeftOf="@id/ok"
+    	android:layout_alignTop="@id/ok"
+    	android:text="Cancel"
+    />
+
+</RelativeLayout>

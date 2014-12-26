@@ -43,8 +43,10 @@
             </intent-filter>
         </activity>
     </application>
-    <uses-permission android:name="android.permission.INTERNET" ></uses-permission> <!--我是访问网络-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission> <!--我是访问SD卡-->
+    <!--我是访问网络-->
+    <uses-permission android:name="android.permission.INTERNET" ></uses-permission> 
+    <!--我是访问SD卡-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission> 
 </manifest>
 
 ```
@@ -56,8 +58,9 @@
 String serviceString = Context.DOWNLOAD_SERVICE; 
 DownloadManager downloadManager; 
 downloadManager = (DownloadManager)getSystemService(serviceString); 
- 
-Uri uri = Uri.parse("http://developer.android.com/shareables/icon_templates-v4.0.zip"); //这里填写你要下载的资源的地址
+
+ //这里填写你要下载的资源的地址
+Uri uri = Uri.parse("http://developer.android.com/shareables/icon_templates-v4.0.zip"); 
 DownloadManager.Request request = new Request(uri); 
 long reference = downloadManager.enqueue(request); 
 ```

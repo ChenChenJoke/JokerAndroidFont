@@ -1,3 +1,5 @@
+
+
 从Android 2.3（API level 9）开始Android用系统服务(Service)的方式提供了Download Manager来优化处理长时间的下载操作。Download Manager处理HTTP
 
 连接并监控连接中的状态变化以及系统重启来确保每一个下载任务顺利完成。
@@ -10,7 +12,42 @@
 
 
 
+
 ###下载文件
+
+在我们开始之前，我们先赋予我们应用两个权限，一个是访问网络，一个是访问手机的SD卡。
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.downloadmanager"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="18"
+        android:targetSdkVersion="21" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+    <uses-permission android:name="android.permission.INTERNET" ></uses-permission> <!--我是访问网络-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission> <!--我是访问SD卡-->
+</manifest>
+
+```
 
 要请求一个下载操作，需要创建一个DownloadManager.Request对象，将要请求下载的文件的Uri传递给Download Manager的enqueue方法，代码片段如下所示：
 

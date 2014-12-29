@@ -38,18 +38,18 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+                <data android:mimeType="application/cn.trinea.download.file" /><!-- 下载完成打开文件 -->
             </intent-filter>
         </activity>
     </application>
-    <!--我是访问网络-->
-    <uses-permission android:name="android.permission.INTERNET" ></uses-permission> 
-    <!--我是访问SD卡-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission> 
+    <uses-permission android:name="android.permission.INTERNET" ></uses-permission>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
 </manifest>
 
+
 ```
+
 
 要请求一个下载操作，需要创建一个DownloadManager.Request对象，将要请求下载的文件的Uri传递给Download Manager的enqueue方法，代码片段如下所示：
 
@@ -62,76 +62,35 @@ downloadManager = (DownloadManager)getSystemService(serviceString);
  //这里填写你要下载的资源的地址
 Uri uri = Uri.parse("http://developer.android.com/shareables/icon_templates-v4.0.zip"); 
 DownloadManager.Request request = new Request(uri); 
+  isFolderExist("Downloadmanager");
+  /*设置下载基础信息,Downloadmanager为存放的url，后面的<下载的微信.apk> 是下载文件存储的文件名*/
+  request.setDestinationInExternalPublicDir("Downloadmanager", "下载的微信.apk");
+  
+  request.setTitle("下载的微信");//设置下载中通知栏提示的标题
+  request.setDescription("微信 introduce");//设置下载中通知栏提示的介绍
+  request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+  //表示下载进行中和下载完成的通知栏是否显示。默认只显示下载中通知。
 long reference = downloadManager.enqueue(request); 
 ```
 
-这里返回的reference变量是系统为当前的下载请求分配的一个唯一的ID，我们可以通过这个ID重新获得这个下载任务，进行一些自己想要进行的操作或者查询
+###参数介绍###
 
-下载的状态以及取消下载等等。
-
-我们可以通过addRequestHeader方法为DownloadManager.Request对象request添加HTTP头，也可以通过setMimeType方法重写从服务器返回的mime type。
-
-我们还可以指定在什么连接状态下执行下载操作。setAllowedNetworkTypes方法可以用来限定在WiFi还是手机网络下进行下载，setAllowedOverRoaming方法
-
-可以用来阻止手机在漫游状态下下载。
-
-下面的代码片段用于指定一个较大的文件只能在WiFi下进行下载：
-
-```java
-request.setAllowedNetworkTypes(Request.NETWORK_WIFI); 
-```
-
-###下载完成回调函数###
-Android API level 11 介绍了getRecommendedMaxBytesOverMobile类方法（静态方法），返回一个当前手机网络连接下的最大建议字节数，可以来判断下载
-
-是否应该限定在WiFi条件下。
-
-调用enqueue方法之后，只要数据连接可用并且Download Manager可用，下载就会开始。
-
-要在下载完成的时候获得一个系统通知（notification）,注册一个广播接受者来接收ACTION_DOWNLOAD_COMPLETE广播，这个广播会包含一个
-
-EXTRA_DOWNLOAD_ID信息在intent中包含了已经完成的这个下载的ID,代码片段如下所示：
-
-```java
-IntentFilter filter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE); 
-     
-BroadcastReceiver receiver = new BroadcastReceiver() { 
-  @Override 
-  public void onReceive(Context context, Intent intent) { 
-    long reference = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1); 
-    if (myDownloadReference == reference) { 
-      
-    } 
-  } 
-}; 
-registerReceiver(receiver, filter); 
-```
-
-###打开已下载的文件###
-使用Download Manager的openDownloadedFile方法可以打开一个已经下载完成的文件，返回一个ParcelFileDescriptor对象。我们可以通过Download Manager来
-
-查询下载文件的保存地址，如果在下载时制定了路径和文件名，我们也可以直接操作文件。
-
-我们可以为ACTION_NOTIFICATION_CLICKED action注册一个广播接受者，当用户从通知栏点击了一个下载项目或者从Downloads app点击可一个下载的项目的
-
-时候，系统就会发出一个点击下载项的广播。
-
-代码片段如下：
-
-```java
-IntentFilter filter = new IntentFilter(DownloadManager.ACTION_NOTIFICATION_CLICKED); 
+request.allowScanningByMediaScanner();表示允许MediaScanner扫描到这个文件，默认不允许。
+request.setTitle(“下载的微信”);设置下载中通知栏提示的标题
+request.setDescription(“微信 introduce”);设置下载中通知栏提示的介绍
+request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+表示下载进行中和下载完成的通知栏是否显示。默认只显示下载中通知。VISIBILITY_VISIBLE_NOTIFY_COMPLETED表示下载完成后显示通知栏提示。VISIBILITY_HIDDEN表示不显示任何通知栏提示，这个需要在AndroidMainfest中添加权限android.permission.DOWNLOAD_WITHOUT_NOTIFICATION.
  
-BroadcastReceiver receiver = new BroadcastReceiver() { 
-  @Override 
-  public void onReceive(Context context, Intent intent) { 
-    String extraID = DownloadManager.EXTRA_NOTIFICATION_CLICK_DOWNLOAD_IDS; 
-    long[] references = intent.getLongArrayExtra(extraID); 
-    for (long reference : references) 
-      if (reference == myDownloadReference) { 
-        // Do something with downloading file. 
-      } 
-  } 
-}; 
+request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);
+表示下载允许的网络类型，默认在任何网络下都允许下载。有NETWORK_MOBILE、NETWORK_WIFI、NETWORK_BLUETOOTH三种及其组合可供选择。如果只允许wifi下载，而当前网络为3g，则下载会等待。
+request.setAllowedOverRoaming(boolean allow)移动网络情况下是否允许漫游。
  
-registerReceiver(receiver, filter); 
-```
+request.setMimeType(“application/cn.trinea.download.file”);
+设置下载文件的mineType。因为下载管理Ui中点击某个已下载完成文件及下载完成点击通知栏提示都会根据mimeType去打开文件，所以我们可以利用这个属性。比如上面设置了mimeType为application/cn.trinea.download.file，我们可以同时设置某个Activity的intent-filter为application/cn.trinea.download.file，用于响应点击的打开文件。
+我们回头看一下头部的xml里面的activity里面多了一个，data标签就是做这个用的。
+
+
+
+###未完待续,Mark下一步完成下载进度的查询和更新，以及下载之后自动打开文件###
+
+> notice :项目是上面写的demo可以直接运行，主页有我的联系方式。

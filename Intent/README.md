@@ -33,7 +33,7 @@ startActivity(intent);
 ###几种Intent的进阶用法###
 android 中intent是经常要用到的。不管是页面牵转，还是传递数据，或是调用外部程序，系统功能都要用到intent。在做了一些intent的例子之后，整理了一下intent，希望对大家有用。由于intent内容太多，不可能真的写全，难免会有遗落，以后我会随时更新。如果你们有疑问或新的intent内容，希望交流。 
  
-######1.从google搜索内容 ######
+######1.从google搜索内容
 
 ```java
 Intent intent = new Intent(); 
@@ -42,28 +42,28 @@ intent.putExtra(SearchManager.QUERY,"searchString")
 startActivity(intent); 
 ```
 
-######2.浏览网页###### 
+######2.浏览网页 
 ```java
 Uri uri = Uri.parse("http://www.google.com"); 
 Intent it  = new Intent(Intent.ACTION_VIEW,uri); 
 startActivity(it); 
 ```
 
-######3.显示地图###### 
+######3.显示地图 
 ```java
 Uri uri = Uri.parse("geo:38.899533,-77.036476"); 
 Intent it = new Intent(Intent.Action_VIEW,uri); 
 startActivity(it); 
 ```
 
-######4.路径规划######
+######4.路径规划
 ```java
 Uri uri = Uri.parse("http://maps.google.com/maps?f=dsaddr=startLat%20startLng&daddr=endLat%20endLng&hl=en"); 
 Intent it = new Intent(Intent.ACTION_VIEW,URI); 
 startActivity(it); 
 ```
 
-######5.拨打电话###### 
+######5.拨打电话 
 
 ```java
 Uri uri = Uri.parse("tel:xxxxxx"); 
@@ -71,7 +71,7 @@ Intent it = new Intent(Intent.ACTION_DIAL, uri);
 startActivity(it); 
 ```
 
-######6.调用发短信的程序###### 
+######6.调用发短信的程序 
 ```java
 Intent it = new Intent(Intent.ACTION_VIEW);    
 it.putExtra("sms_body", "The SMS text");    
@@ -79,7 +79,7 @@ it.setType("vnd.android-dir/mms-sms");
 startActivity(it); 
 ```
 
-######7.发送短信###### 
+######7.发送短信 
 
 ```java
 Uri uri = Uri.parse("smsto:0800000123");    
@@ -94,7 +94,7 @@ mmsintent.putExtra(Messaging.KEY_ACTION_SENDTO_EXIT_ON_SENT, true);
 startActivity(mmsintent); 
 ```
 
-######8.发送彩信###### 
+######8.发送彩信 
 
 ```java
 Uri uri = Uri.parse("content://media/external/images/media/23");    
@@ -116,7 +116,7 @@ intent.putExtra(Messaging.KEY_ACTION_SENDTO_EXIT_ON_SENT, exitOnSent);
 startActivity(intent); 
 ```
 
-######9.发送Email###### 
+######9.发送Email 
 ```java
 Uri uri = Uri.parse("mailto:xxx@abc.com"); 
 Intent it = new Intent(Intent.ACTION_SENDTO, uri); 
@@ -144,7 +144,7 @@ startActivity(Intent.createChooser(it, "Choose Email Client"));
 ```
 
 
-######10.播放多媒体######   
+######10.播放多媒体   
 
 ```java
 Intent it = new Intent(Intent.ACTION_VIEW); 
@@ -157,21 +157,21 @@ startActivity(it);
 ```
 
 
-######11.uninstall apk###### 
+######11.uninstall apk 
 ```java
 Uri uri = Uri.fromParts("package", strPackageName, null);    
 Intent it = new Intent(Intent.ACTION_DELETE, uri);    
 startActivity(it); 
 ```
 
-######12.install apk###### 
+######12.install apk 
 
 ```java
 Uri installUri = Uri.fromParts("package", "xxx", null); 
 returnIt = new Intent(Intent.ACTION_PACKAGE_ADDED, installUri); 
 ```
 
-######13. 打开照相机###### 
+######13. 打开照相机 
 ```java
 Intent i = new Intent(Intent.ACTION_CAMERA_BUTTON, null); 
 this.sendBroadcast(i); 
@@ -194,7 +194,7 @@ inttPhoto.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
 startActivityForResult(inttPhoto, 10); 
 ```
 
-######14.从gallery选取图片###### 
+######14.从gallery选取图片 
 
 ```java
   Intent i = new Intent(); 
@@ -203,13 +203,13 @@ startActivityForResult(inttPhoto, 10);
             startActivityForResult(i, 11); 
 ```
 
-######15. 打开录音机###### 
+######15. 打开录音机 
 ```java
    Intent mi = new Intent(Media.RECORD_SOUND_ACTION); 
   startActivity(mi); 
   ```
 
-######16.显示应用详细列表######      
+######16.显示应用详细列表      
 ```java 
 Uri uri = Uri.parse("market://details?id=app_id");         
 Intent it = new Intent(Intent.ACTION_VIEW, uri);         
@@ -223,7 +223,7 @@ Uri uri = Uri.parse("market://details?id=<packagename>");
 这个简单多了 
   ```
 
-######17寻找应用######   
+######17寻找应用   
 
 ```java   
 Uri uri = Uri.parse("market://search?q=pname:pkg_name");         
@@ -232,7 +232,7 @@ startActivity(it);
 //where pkg_name is the full package path for an application       
 
 ```
-######18打开联系人列表###### 
+######18打开联系人列表 
 ```java           
            Intent i = new Intent(); 
            i.setAction(Intent.ACTION_GET_CONTENT); 
@@ -244,7 +244,7 @@ startActivity(it);
             Intent it = new Intent(Intent.ACTION_PICK, uri); 
             startActivityForResult(it, REQUEST_TEXT); 
 ```
-######19 打开另一程序######
+######19 打开另一程序
 ```java
 Intent i = new Intent(); 
             ComponentName cn = new ComponentName("com.yellowbook.android2", 
@@ -254,7 +254,7 @@ Intent i = new Intent();
             startActivityForResult(i, RESULT_OK); 
 ```
 
-######20.调用系统编辑添加联系人（高版本SDK有效）：######
+######20.调用系统编辑添加联系人（高版本SDK有效）：
 ```java
 Intent it = newIntent(Intent.ACTION_INSERT_OR_EDIT);
                it.setType("vnd.android.cursor.item/contact");
@@ -270,7 +270,7 @@ Intent it = newIntent(Intent.ACTION_INSERT_OR_EDIT);
                it.putExtra(android.provider.Contacts.Intents.Insert.JOB_TITLE,"title");
                 startActivity(it);
  ```
-######21.调用系统编辑添加联系人（全有效）：######
+######21.调用系统编辑添加联系人（全有效）：
 ```java
 Intent intent = newIntent(Intent.ACTION_INSERT_OR_EDIT);
            intent.setType(People.CONTENT_ITEM_TYPE);
